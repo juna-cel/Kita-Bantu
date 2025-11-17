@@ -1,15 +1,17 @@
 <?php
-define('DB_HOST', '127.0.0.1');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'kita_bantu');
+if (!function_exists('GetDbConnection')) {
+    function GetDbConnection() {
+        $host = "localhost";
+        $user = "root";
+        $pass = "";
+        $db   = "kita_bantu";
 
-function getDBConnection() {
-    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        $conn = new mysqli($host, $user, $pass, $db);
+        if ($conn->connect_error) {
+            die("Koneksi gagal: " . $conn->connect_error);
+        }
 
-    if ($conn->connect_error) {
-        die("Koneksi gagal: " . $conn->connect_error);
+        return $conn;
     }
-
-    return $conn;
 }
+?>

@@ -17,12 +17,13 @@ CREATE TABLE user (
 
 -- Tabel kategori
 CREATE TABLE kategori (
-    id INT(20) AUTO_INCREMENT PRIMARY KEY,
-    nama_kategori VARCHAR(200) NOT NULL,
-    icon VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nama_kategori VARCHAR(100) NOT NULL,
+  icon VARCHAR(100) DEFAULT NULL,
+  slug VARCHAR(100) DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
 -- Tabel post (relasi ke user)
 CREATE TABLE post (
@@ -67,3 +68,27 @@ CREATE TABLE master_bank (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
+
+INSERT INTO kategori (nama_kategori, icon, slug) VALUES
+('Bantuan Pendidikan', 'bi bi-mortarboard', 'pendidikan.php'),
+('Bantuan Lingkungan', 'bi bi-flower1', 'lingkungan.php'),
+('Kegiatan Sosial', 'bi bi-gift', 'sosial.php'),
+('Bantuan Infrastruktur', 'bi bi-building', 'infrastruktur.php'),
+('Bantuan Modal Usaha', 'bi bi-cash-stack', 'modal-usaha.php'),
+('Menolong Hewan', 'bi bi-heart', 'hewan.php'),
+('Bantuan Rumah Ibadah', 'bi bi-bank', 'ibadah.php'),
+('Bantuan Kesehatan', 'bi bi-hospital', 'kesehatan.php'),
+('Zakat', 'bi bi-coin', 'zakat.php'),
+('Bencana Alam', 'bi bi-bag-heart', 'bencana.php');
+
+
+CREATE TABLE riwayat (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  nama_donasi VARCHAR(100),  
+  jumlah_donasi DECIMAL(12,2),
+  tanggal_donasi DATETIME DEFAULT CURRENT_TIMESTAMP,
+  metode_pembayaran VARCHAR(50),
+  status VARCHAR(20) DEFAULT 'Berhasil',
+  FOREIGN KEY (user_id) REFERENCES user(id)
+);

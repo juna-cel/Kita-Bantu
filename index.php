@@ -14,9 +14,7 @@ $request = parse_url($request, PHP_URL_PATH);
 switch ($request) {
     case '/':
     case '/index.php':
-        require_once __DIR__ . '/includes/header.php';
-        echo "<div class='container mt-4'><h2>Selamat datang di Aplikasi Kita Bantu</h2></div>";
-        require_once __DIR__ . '/includes/footer.php';
+         require_once __DIR__ . '/modules/login.php';
         break;
 
     // Modul User
@@ -62,6 +60,45 @@ switch ($request) {
     case '/dashboard':
     case '/dashboard/index':
         require_once __DIR__ . '/modules/dashboard.php';
+        break;
+
+    // Detail Post
+    case '/detail-post':
+    case '/detail-post/index':
+        require_once __DIR__ . '/modules/detail_post.php';
+        break;
+
+
+    // Modul Admin    
+    case '/admin/dashboard':
+    case '/admin/dashboard/index':
+        require_once __DIR__ . '/modules/admin/dashboard.php';
+        break;
+    
+    case '/admin/kategori':
+    case '/admin/kategori/index':
+        require_once __DIR__ . '/modules/admin/kategori.php';
+        break;
+    
+
+    case '/admin/post':
+    case '/admin/post/index':
+        require_once __DIR__ . '/modules/admin/post.php';
+        break;
+        
+    case '/admin/donasi':
+    case '/admin/donasi/index':
+        require_once __DIR__ . '/modules/admin/donasi.php';
+        break;
+        
+    case '/admin/masterbank':
+    case '/admin/masterbank/index':
+        require_once __DIR__ . '/modules/admin/masterbank.php';
+        break;
+        
+    case '/admin/user':
+    case '/admin/user/index':
+        require_once __DIR__ . '/modules/admin/user.php';
         break;
 
     default:
