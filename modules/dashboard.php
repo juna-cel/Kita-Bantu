@@ -164,32 +164,37 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
       // Ambil hanya 3 kategori unik dari tabel post
       $sqlKategori = "
-        SELECT DISTINCT kategori
-        FROM post
-        WHERE kategori IS NOT NULL AND kategori != ''
-        ORDER BY kategori ASC
+        SELECT k.nama_kategori AS kategori, COUNT(p.id) AS total
+        FROM post p
+        JOIN kategori k ON p.kategori_id = k.id
+        WHERE p.kategori_id IS NOT NULL
+        GROUP BY p.kategori_id
+        ORDER BY total DESC
         LIMIT 3
       ";
-      $resultKategori = $conn->query($sqlKategori);
+     $resultKategori = $conn->query($sqlKategori);
       ?>
 
       <!-- Tombol Kategori -->
-      <div class="filter-buttons" id="kategoriScroll">
-        <a href="/modules/kategori.php" class="active" onclick="filterCategory('all', this)">All</a>
-        <?php while ($kat = $resultKategori->fetch_assoc()): ?>
+    <div class="filter-buttons" id="kategoriScroll">
+    <a href="/modules/kategori.php" class="active" onclick="filterCategory('all', this)">All</a>
+
+      <?php while ($kat = $resultKategori->fetch_assoc()): ?>
           <a href="#" onclick="filterCategory('<?= htmlspecialchars($kat['kategori']) ?>', this)">
-            <?= htmlspecialchars($kat['kategori']) ?>
+              <?= htmlspecialchars($kat['kategori']) ?>
           </a>
-        <?php endwhile; ?>
-      </div>
+      <?php endwhile; ?>
+   </div>
+
 
       <?php
       // Ambil semua data donasi aktif
       $sql = "
-        SELECT *
-        FROM post
-        WHERE status = 'aktif'
-        ORDER BY created_at DESC
+       SELECT p.*, k.nama_kategori AS kategori
+        FROM post p
+        JOIN kategori k ON p.kategori_id = k.id
+        WHERE p.status = 'aktif'
+        ORDER BY p.created_at DESC
       ";
       $result = $conn->query($sql);
 

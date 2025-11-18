@@ -61,11 +61,11 @@ $conn->close();
       justify-self: center;
     }
     .profile-section img {
-      width: 70px;
-      height: 70px;
+      width: 85px;
+      height: 85px;
       border-radius: 50%;
       background: #fff;
-      padding: 5px;
+      padding: 2px;
       flex-shrink: 0;
       object-fit: cover;
     }
