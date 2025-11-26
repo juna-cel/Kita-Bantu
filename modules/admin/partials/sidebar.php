@@ -8,7 +8,7 @@
             <img src="/public/img/logo (2).png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
             <!--end::Brand Image-->
             <!--begin::Brand Text-->
-            <span class="brand-text fw-light">AdminLTE 4</span>
+            <span class="brand-text fw-light"></span>
             <!--end::Brand Text-->
         </a>
         <!--end::Brand Link-->
@@ -23,7 +23,7 @@
                 <!-- START: Customized simplified menu -->
                 <li class="nav-item">
                     <a href="/admin/dashboard" class="nav-link" id="menu-donasi">
-                        <i class="nav-icon fas fa-home"></i>
+                        <i class="nav-icon bi bi-house-fill"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>

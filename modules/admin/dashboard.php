@@ -31,6 +31,15 @@ if ($stmt) {
   $stmt->close();
 }
 
+$sql_top_donatur = "SELECT nama_donatur, email, SUM(jumlah) AS total_donasi
+                    FROM donasi
+                    WHERE status = 'success'
+                    GROUP BY email, nama_donatur
+                    ORDER BY total_donasi DESC
+                    LIMIT 10";
+
+$donatur_result = $conn->query($sql_top_donatur); // FIX: variabel benar
+
 include_once __DIR__ . '/partials/app.php';
 ?>
 
@@ -107,40 +116,82 @@ include_once __DIR__ . '/partials/app.php';
       </div>
 
       <!-- User Terbaru -->
-      <div class="card">
-        <div class="card-header">
-          <h5 class="mb-0">User Terbaru</h5>
-        </div>
-        <div class="card-body p-0">
-          <table class="table table-striped mb-0">
-            <thead class="table-light">
-              <tr>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Tanggal</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php if ($user_result && $user_result->num_rows > 0): ?>
-                <?php while($u = $user_result->fetch_assoc()): ?>
-                <tr>
-                  <td><?= htmlspecialchars($u['nama_lengkap']) ?></td>
-                  <td><?= htmlspecialchars($u['email']) ?></td>
-                  <td><?= date('d M Y', strtotime($u['created_at'])) ?></td>
-                </tr>
-                <?php endwhile; ?>
-              <?php else: ?>
-                <tr>
-                  <td colspan="3" class="text-center text-muted">Tidak dapat memuat data user (cek log error)</td>
-                </tr>
-              <?php endif; ?>
-            </tbody>
-          </table>
+      <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">User Terbaru</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table class="table table-striped mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Nama</th>
+                      <th>Email</th>
+                      <th>Tanggal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if ($user_result && $user_result->num_rows > 0): ?>
+                      <?php while($u = $user_result->fetch_assoc()): ?>
+                      <tr>
+                        <td><?= htmlspecialchars($u['nama_lengkap']) ?></td>
+                        <td><?= htmlspecialchars($u['email']) ?></td>
+                        <td><?= date('d M Y', strtotime($u['created_at'])) ?></td>
+                      </tr>
+                      <?php endwhile; ?>
+                    <?php else: ?>
+                      <tr>
+                        <td colspan="3" class="text-center text-muted">Tidak dapat memuat data user (cek log error)</td>
+                      </tr>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+              
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Donatur Terbanyak</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+              <table class="table table-striped mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Nama Donatur</th>
+                    <th>Email</th>
+                    <th>Total Donasi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php if ($donatur_result && $donatur_result->num_rows > 0): ?>
+                    <?php while ($d = $donatur_result->fetch_assoc()): ?>
+                    <tr>
+                      <td><?= htmlspecialchars($d['nama_donatur']) ?></td>
+                      <td><?= htmlspecialchars($d['email']) ?></td>
+                      <td>Rp <?= number_format($d['total_donasi'], 0, ',', '.') ?></td>
+                    </tr>
+                    <?php endwhile; ?>
+                  <?php else: ?>
+                    <tr>
+                      <td colspan="3" class="text-center text-muted">Belum ada donasi sukses.</td>
+                    </tr>
+                  <?php endif; ?>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
   </div>
+
+  
 </main>
 
 <!-- Chart.js -->

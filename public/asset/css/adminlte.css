@@ -4377,7 +4377,7 @@ textarea.form-control-lg {
   --bs-card-img-overlay-padding: 1rem;
   --bs-card-group-margin: 0.75rem;
   position: relative;
-  display: flex;
+  display: flex ;
   flex-direction: column;
   min-width: 0;
   height: var(--bs-card-height);
@@ -4389,6 +4389,14 @@ textarea.form-control-lg {
   border-radius: var(--bs-card-border-radius);
   box-shadow: var(--bs-card-box-shadow);
 }
+
+.ukuran {
+  display: inline-flex;
+  margin-top: 1vh;
+  
+}
+
+
 .card > hr {
   margin-right: 0;
   margin-left: 0;
