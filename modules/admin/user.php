@@ -3,7 +3,7 @@
 include_once __DIR__ . '/../../config/database.php';
 
 // === Ambil koneksi database ===
-$conn = getDBConnection();
+$conn = getDbConnection();
 
 
 // ==== HANDLE HAPUS ====

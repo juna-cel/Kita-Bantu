@@ -1,7 +1,6 @@
 <?php
 session_start();
 include __DIR__ . "/../config/database.php"; // koneksi database
-
 $conn = GetDbConnection();
 
 $user = null;
@@ -214,6 +213,11 @@ $conn->close();
       <div><i class="bi bi-info-circle"></i> Tentang Kita Bantu</div>
       <i class="bi bi-chevron-right"></i>
     </a>
+    <a href="logout.php" class="menu-item" class="menu-item">
+      <div><i class="bi bi-people-fill"></i> Login Akun Lain</div>
+      <i class="bi bi-chevron-right"></i>
+    </a>
+    
     <div class="banner">
       <img src="../public/img/banner1.png" alt="Banner">
     </div>

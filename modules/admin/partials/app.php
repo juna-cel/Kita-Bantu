@@ -1,3 +1,12 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once __DIR__ . '/../../../middleware/auth.php'; 
+?>
+
+
 <!doctype html>
 <html lang="en">
   <!--begin::Head-->

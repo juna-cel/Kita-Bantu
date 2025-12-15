@@ -52,6 +52,11 @@ switch ($request) {
         require_once __DIR__ . '/modules/login.php';
         break;
 
+    case '/register':
+    case '/register/index':
+        require_once __DIR__ . '/modules/register.php';
+        break;
+
     case '/proses':
     case '/proses/index':
         require_once __DIR__ . '/modules/proses.php';
@@ -59,6 +64,7 @@ switch ($request) {
 
     case '/dashboard':
     case '/dashboard/index':
+        require_once __DIR__ . '/middleware/auth.php';
         require_once __DIR__ . '/modules/dashboard.php';
         break;
 
@@ -68,44 +74,92 @@ switch ($request) {
         require_once __DIR__ . '/modules/detail_post.php';
         break;
 
-
     // Modul Admin    
     case '/admin/dashboard':
     case '/admin/dashboard/index':
+        $requiredPermission = 'dashboard_view';
+        require_once __DIR__ . '/middleware/auth.php';
+        require_once __DIR__ . '/middleware/permission.php';
         require_once __DIR__ . '/modules/admin/dashboard.php';
         break;
     
     case '/admin/kategori':
     case '/admin/kategori/index':
+        $requiredPermission = 'list_category';
+        require_once __DIR__ . '/middleware/auth.php';
+        require_once __DIR__ . '/middleware/permission.php';
         require_once __DIR__ . '/modules/admin/kategori.php';
         break;
     
 
     case '/admin/post':
     case '/admin/post/index':
+        $requiredPermission = 'post_view';
+        require_once __DIR__ . '/middleware/auth.php';
+        require_once __DIR__ . '/middleware/permission.php';
         require_once __DIR__ . '/modules/admin/post.php';
         break;
         
     case '/admin/donasi':
     case '/admin/donasi/index':
+        $requiredPermission = 'donation_view';
+        require_once __DIR__ . '/middleware/auth.php';
+        require_once __DIR__ . '/middleware/permission.php';
         require_once __DIR__ . '/modules/admin/donasi.php';
         break;
+    
+    
+        case '/admin/masterbank':
+        case '/admin/masterbank/index':
+            $requiredPermission = 'bank_view';
+            require_once __DIR__ . '/middleware/auth.php';
+            require_once __DIR__ . '/middleware/permission.php';
+            require_once __DIR__ . '/modules/admin/masterbank.php';
+            break;
+
+        case '/admin/user':
+        case '/admin/user/index':
+            $requiredPermission = 'user_view';  // atau permission yg kamu buat
+            require_once __DIR__ . '/middleware/auth.php';
+            require_once __DIR__ . '/middleware/permission.php';
+            require_once __DIR__ . '/modules/admin/user.php';
+            break;
+
+    
         
-    case '/admin/masterbank':
-    case '/admin/masterbank/index':
-        require_once __DIR__ . '/modules/admin/masterbank.php';
+  case '/admin/role-permission':
+case '/admin/role-permission/index':
+    require_once __DIR__ . '/modules/admin/role_permission.php';
+    break;
+
+    case '/admin/role-permission':
+    case '/admin/role-permission/index':
+        require_once __DIR__ . '/modules/admin/role_permission.php';
         break;
-        
-    case '/admin/user':
-    case '/admin/user/index':
-        require_once __DIR__ . '/modules/admin/user.php';
+
+    case '/admin/role-show':
+    case '/admin/role-show/index':
+        require_once __DIR__ . '/modules/admin/show.php';
         break;
+
+    case '/admin/role-permission-process':
+        require_once __DIR__ . '/modules/admin/role_permission_process.php';
+        break;    
+
+    
+
+ 
+        // LOGOUT
+case '/logout':
+case '/logout/index':
+    require_once __DIR__ . '/modules/logout.php';
+    break;
 
     default:
         http_response_code(404);
         echo "<div style='padding:20px; font-family:sans-serif;'>
                 <h2>404 - Halaman tidak ditemukan</h2>
-                <p>Halaman <b>{$request}</b> tidak tersedia.</p>
+               
               </div>";
         break;
-}
+} 

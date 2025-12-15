@@ -2,6 +2,13 @@
 include_once __DIR__ . '/../../config/database.php';
 $conn = getDBConnection();
 
+if (!hasPermission('donation_view')) {
+    http_response_code(403);
+    require __DIR__ . '../../403.php';
+    exit;
+}
+
+
 // ====== PROSES TAMBAH ======
 if (isset($_POST['tambah'])) {
     $nama_donatur = $_POST['nama_donatur'];

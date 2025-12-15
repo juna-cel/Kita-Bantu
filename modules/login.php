@@ -1,12 +1,26 @@
-<?php if (isset($_GET['password_changed']) && $_GET['password_changed'] === 'success'): ?>
-  <div class="alert alert-success">Kata sandi berhasil diubah! Silakan login dengan sandi baru.</div>
-<?php endif; ?>
-  
 <?php
-session_start();
+// ===========================
+// START SESSION (HANYA SEKALI)
+// ===========================
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// CEGAH AKSES LOGIN JIKA SUDAH LOGIN
+if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
+    header("Location: /modules/akun.php");
+    exit;
+}
+
+// CEK PERUBAHAN PASSWORD
+if (isset($_GET['password_changed']) && $_GET['password_changed'] === 'success') {
+    $passwordChangedMessage = "Kata sandi berhasil diubah! Silakan login dengan sandi baru.";
+}
+
 include __DIR__ . '/../config/database.php';
 $conn = GetDbConnection();
 
+// PROSES LOGIN
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email    = trim($_POST['email']);
     $password = trim($_POST['password']);
@@ -20,17 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->get_result()->fetch_assoc();
 
         if ($user && password_verify($password, $user['password'])) {
+
             $_SESSION['login'] = true;
             $_SESSION['user_id'] = $user['id'];
+            $_SESSION['role_id'] = $user['role_id'];
             $_SESSION['nama'] = $user['nama_lengkap'];
             $_SESSION['email'] = $user['email'];
-
-            header("Location: akun.php");
-
             $_SESSION['file_foto'] = $user['file_foto'];
 
-
+            header("Location: /modules/akun.php");
             exit;
+
         } else {
             $error = "Email atau password salah!";
         }
@@ -54,16 +68,22 @@ body { background-color:#f5f5f5; }
 </style>
 </head>
 <body>
+
 <div class="container p-0 bg-white min-vh-100 d-flex flex-column" style="max-width:400px;">
   <div class="header">Login</div>
   <div class="flex-grow-1 px-4 py-4 d-flex flex-column justify-content-center">
     <h6 class="fw-bold mb-4">Selamat datang kembali di KitaBantu</h6>
 
-    <?php if (isset($_GET['registered']) && $_GET['registered'] === 'success'): ?>
-      <div class="alert alert-success">Pendaftaran berhasil! Silakan login.</div>
+    <?php if (!empty($passwordChangedMessage)): ?>
+        <div class="alert alert-success"><?= $passwordChangedMessage ?></div>
     <?php endif; ?>
+
+    <?php if (isset($_GET['registered']) && $_GET['registered'] === 'success'): ?>
+        <div class="alert alert-success">Pendaftaran berhasil! Silakan login.</div>
+    <?php endif; ?>
+
     <?php if (!empty($error)): ?>
-      <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
     <form method="POST">
@@ -77,5 +97,7 @@ body { background-color:#f5f5f5; }
     </p>
   </div>
 </div>
+
 </body>
 </html>
+  

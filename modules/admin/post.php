@@ -2,6 +2,13 @@
 include_once __DIR__ . '/../../config/database.php';
 include_once __DIR__ . '/../../models/Kategori.php'; // ✅ ambil model kategori
 
+if (!hasPermission('post_view')) {
+    http_response_code(403);
+    require __DIR__ . '../../403.php';
+    exit;
+}
+
+
 // 🟩 Folder upload disesuaikan (bukan "posts" tapi "post")
 $uploadDir = __DIR__ . '/../../uploads/post/';
 if (!file_exists($uploadDir)) mkdir($uploadDir, 0777, true);
@@ -30,13 +37,15 @@ if (isset($_POST['simpan']) || isset($_POST['update'])) {
     $tanggal = $_POST['tanggal'];
     $status = $_POST['status'];
     $kategori_id = (int)$_POST['kategori_id'];
+
     // $kategori_row = $conn->query("SELECT nama_kategori, slug FROM kategori WHERE id='$kategori_id'")->fetch_assoc();
     $kategori_nama = $kategori_row['nama_kategori'] ?? '';
+
     // Ubah judul menjadi slug
-    $slug = strtolower(trim($judul));                   // ubah ke huruf kecil
-    $slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);  // hapus karakter selain huruf, angka, spasi, atau tanda minus
-    $slug = preg_replace('/[\s-]+/', '-', $slug);       // ganti spasi atau tanda minus ganda menjadi satu minus
-    $slug = trim($slug, '-');                           // hapus minus di awal/akhir
+    $slug = strtolower(trim($judul));                   
+    $slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);  
+    $slug = preg_replace('/[\s-]+/', '-', $slug);       
+    $slug = trim($slug, '-');                           
     $created_by = 1;
 
     // 🟩 Upload foto (pastikan ke uploads/post/)

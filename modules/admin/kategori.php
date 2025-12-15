@@ -1,5 +1,13 @@
 <?php
 include_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '../../../middleware/auth.php';
+
+if (!hasPermission('list_category')) {
+    http_response_code(403);
+    require __DIR__ . '../../403.php';
+    exit;
+}
+
 $conn = getDBConnection();
 
 // === CREATE ===
